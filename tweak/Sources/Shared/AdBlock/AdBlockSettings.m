@@ -48,7 +48,7 @@ UIViewController *SGAdsSettingsPage(void) {
     })];
     [counts addObject:SGActionRow(@"Reset the counters", nil, ^{ SGResetAdBlock(); })];
 
-    SGModRow *fakePremium = SGOptionRow(@"Spoof Premium", nil, SGKeyFakePremium);
+    SGModRow *fakePremium = SGOptionRow(@"Individual", nil, SGKeyFakePremium);
     fakePremium.defaultOn = YES;
     fakePremium.warning = SGFakePremiumWarning;
 
