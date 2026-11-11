@@ -19,6 +19,7 @@
 #import "Shared/ListeningStats/ListeningStats.h"
 #import "App/About/About.h"
 #import "Pages.h"
+#import "Shared/AutoMix/AutoMix.h"
 
 static const CGFloat kRowHeight = 56;
 static char kRowKey, kInsetKey;
@@ -230,6 +231,9 @@ static UIViewController *modSettingsPage(void) {
     SGModRow *downloads = pageRow(@"Downloads", @"arrow.down.circle", ^UIViewController *{ return SGDownloadsSettingsPage(); });
     downloads.value = ^NSString *{ return SGDownloadsRowSummary(); };
     downloads.refreshOn = SGDownloadsDidChangeNotification;
+    SGModRow *autoMix = pageRow(@"AutoMix", @"waveform.path", ^UIViewController *{ return SGAutoMixSettingsPage(); });
+    autoMix.value = ^NSString *{ return SGFlag(SGKeyAutoMix, NO) ? SGAutoMixStatus() : @"Off"; };
+    autoMix.refreshOn = SGAutoMixStatusDidChangeNotification;
     NSMutableArray<SGModRow *> *parts = [NSMutableArray arrayWithArray:@[
         pageRow(@"Appearance", @"paintpalette", ^UIViewController *{ return SGAppearanceSettingsPage(); }),
         pageRow(@"Navbar", @"dock.rectangle", ^UIViewController *{ return SGNavbarPage(); }),
@@ -238,6 +242,7 @@ static UIViewController *modSettingsPage(void) {
         downloads,
         pageRow(@"Lock Screen", @"lock.iphone", ^UIViewController *{ return SGLockScreenSettingsPage(); }),
         audioEffects,
+        autoMix,
         pageRow(@"Vibrations", @"iphone.radiowaves.left.and.right", ^UIViewController *{ return SGVibrationsSettingsPage(); }),
     ]];
     if (@available(iOS 17.0, *)) {
